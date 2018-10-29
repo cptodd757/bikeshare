@@ -28,7 +28,7 @@ Syntax highlighted code block
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-[[https://github.com/cptodd757/bikeshare/blob/master/bikes.jpg]]
+[Image](https://github.com/cptodd757/bikeshare/blob/master/bikes.jpg)
 
 ### Jekyll Themes
 
