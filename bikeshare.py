@@ -23,6 +23,73 @@ use_cloud_credits = False
 
 df = pd.read_csv('metro-bike-share-trip-data.csv',low_memory=False)
 
+def get_month(x):
+	return x[5:7]
+def get_year(x):
+	return x[2:4]
+def months_since_start(x):
+	return int(x[5:7]) - 7 + 12*(int(x[2:4]) - 16)
+def numeric_time(x):
+	return int(pd.Timestamp(x).to_pydatetime().timestamp())
+df['Month'] = df['Start Time'].apply(get_month)
+df['Year'] = df['Start Time'].apply(get_year)
+df['Time Elapsed'] = df['Start Time'].apply(months_since_start)
+df['Numeric Time'] = df['Start Time'].apply(numeric_time)
+print(df['Numeric Time'])
+
+
+#exit()
+
+#1. 3 interesting trends:
+#a. average duration of trip vs. months for each bike
+df_sorted = df.sort_values(['Bike ID','Year','Month'])
+df_grouped = df.groupby(['Bike ID','Time Elapsed'])['Duration'].mean()
+#df_grouped['Mean'] = df_grouped.apply(np.mean)
+print(df['Bike ID'].value_counts())
+print(df_grouped)
+#exit()
+#bike_ids = df['Bike ID'].value_counts().index[:10]
+bike_ids = list(df_grouped.index.levels[0])
+bike_ids = [int(x) for x in bike_ids]
+print(bike_ids)
+
+fig, ax = plt.subplots()
+fig_name = 'bike-ids'
+count = 0
+for i in range(len(bike_ids)):
+	
+	bike_data = df_grouped[bike_ids[i]]
+	#print(bike_data.values)
+
+	if len(bike_data.values) > 3 and bike_data.values[-1] < bike_data.values[-2] and bike_data.values[-2] < bike_data.values[-3] and bike_data.values[-3] < bike_data.values[-4]:
+		ax.plot(bike_data.index, bike_data.values, label=bike_ids[i])
+		ax.legend(title="Bike IDs")
+		fig_name = fig_name + '-' + str(bike_ids[i])
+		
+		
+		if (count+1)%5 == 0:
+		#plt.show()
+			ax.set_xlabel("Months since July 2016")
+			ax.set_ylabel("Average duration (sec) per month")
+			ax.set_title("Average Duration of Rides Each Month")
+			fig_name += '.png'
+			fig.savefig(fig_name)
+			#fig.set_title("Bike IDs")
+			fig, ax = plt.subplots()
+			fig_name = 'bike-ids'
+		count += 1
+
+show = False
+if show:
+	plt.show()
+
+
+#b. Where are walkups most frequent
+walkup_counts = df.groupby(['Passholder Type']).get_group('Walk-up')['Starting Station ID'].dropna().astype(np.int32).value_counts()
+print(walkup_counts)
+#exit()
+
+
 #2. Most popular start/stop stations
 start_ids = df['Starting Station ID'].dropna().astype(np.int32)
 end_ids = df['Ending Station ID'].dropna().astype(np.int32)
@@ -34,6 +101,7 @@ def remove_zeros(array):
 	return [x for x in array if x != 0]
 
 
+#find min and max lat and long
 start_lats = remove_zeros(list(df['Starting Station Latitude'].dropna().values))
 end_lats = remove_zeros(list(df['Ending Station Latitude'].dropna().values))
 start_longs = remove_zeros(list(df['Starting Station Longitude'].dropna().values))
@@ -42,6 +110,9 @@ print('Minimum latitude: ',np.amin([np.amin(start_lats),np.amin(end_lats)]))
 print('Maximum latitude: ',np.amax([np.amax(start_lats),np.amax(end_lats)]))
 print('Minimum longitude: ',np.amin([np.amin(start_longs),np.amin(end_longs)]))
 print('Maximum longitude: ',np.amax([np.amax(start_longs),np.amax(end_longs)]))
+#end digression
+
+#def heatmap(counts, filename, color):
 
 
 def hue_strength(color,strength):
