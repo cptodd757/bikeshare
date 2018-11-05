@@ -84,7 +84,10 @@ body, html {
 
 <div id=stations class=section>
   <div id=station_most_popular>
-    Most popular stations.
+    <h2>
+    Most popular stations overall:
+    </h2>
+    <br>
     <div class="container">
       <div class="row">
         <div id="start_heatmap_url" class="col">
@@ -112,8 +115,12 @@ body, html {
       </div>
     </div>
   </div>
+  <br>
   <div id=station_monthly>
-    Station monthly activity.
+    <h2>
+    Monthly activity per station: click to view different months!
+    </h2>
+    <br>
     <div class="btn-group" role="group" aria-label="Basic example">
       <button name=month id=Jul16 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">Jul16</button>
       <button name=month id=Aug16 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">Aug16</button>
@@ -127,7 +134,10 @@ body, html {
     </div>
   </div>
   <div id=station_daily>
-    Station daily activity.
+     <h2>
+    Daily activity per station: click to view different months!
+    </h2>
+    <br>
     <div class="btn-group" role="group" aria-label="Basic example">
       <button name=hour id=hour00 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">00</button>
       <button name=hour id=hour01 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">01</button>
@@ -156,7 +166,10 @@ body, html {
     </div>
   </div>
   <div id=station_walkup>
-    Station walkup data.
+     <h2>
+    Most popular stations for walk-up pass types:
+    </h2>
+    <br>
     <div class=container>
       <div class="row">
       <div id="walkup_start_heatmap_url" class="col">
