@@ -148,10 +148,10 @@ body, html {
 <div id=bikes class=section>
   
   
-  <h1 style="height:50%; background-image: url('https://cdn.vox-cdn.com/uploads/chorus_image/image/51340845/29043874872_788d992b9a_k.0.jpg')">
+  <h2>
     Average distance travelled*: <i>.31 miles</i> <br>
-  </h1>
-  <h6>
+  </h2>
+  <h6 style="text-align:left">
     *Statistic computed by performing the following steps:
     <ol>
       <li>taking a random sample of the data</li>
@@ -163,7 +163,28 @@ body, html {
   </h6>
        
   <div id=dur_vs_month>
+    <div class=container>
+      <div class="row">
+        <div class="col">
+          <img src="data/line-graphs/bike-ids-5798-5801-5885-5904-5940.png" height=500 width=500>
+        </div>
+        <div class="col">
+          <img src="data/line-graphs/bike-ids-5974-5975-5987-6010-6099.png" height=500 width=500>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <img src="data/line-graphs/bike-ids-6182-6209-6212-6324-6334.png" height=500 width=500>
+        </div>
+        <div class="col">
+          <img src="data/line-graphs/bike-ids-6385-6386-6400-6413-6553.png" height=500 width=500>
+        </div>
+      </div>
+    </div>
+  </div>
+                  
   Duration vs. month
+    <img src="data/line-graphs/bike-ids-5798-5801-5885-5904-5940.png>
   </div>
     
 </div>
@@ -181,6 +202,12 @@ body, html {
   var i;
   for (i = 0; i < maps.length; i++)
     load_heatmap(document.getElementById(maps[i]));
+  
+ 
+  
+  
+  
+  
   function load_heatmap(element)
   {
     //element = document.getElementById(url);
