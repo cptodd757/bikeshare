@@ -125,7 +125,7 @@ body, html {
       <div id="walkup_start_heatmap_url" class="col">
       </div>
         <div class="col" id="walkup_start_heatmap_url_table">
-          Figure 3. Most popular stations for walk-up passes to be used.
+          
         </div>
       </div>
       <div class="row">
@@ -284,6 +284,11 @@ body, html {
       map.setAttribute("height",500);
       map.setAttribute("width",500);
       element.appendChild(map);
+      if (element.id == "walkup_start_heatmap_url")
+      {
+        var text = document.createTextNode("Figure 3. Most popular stations for walk-up passes to be used.");
+        element.appendChild(text);
+      }
       load_heatmap_table(document.getElementById(element.id + "_table"));
     }
   }
