@@ -223,9 +223,11 @@ fig.savefig('data/line-graphs/frequency-vs-hour.png')
 
 #c. Breakdown of Trip Route Category vs. Passholder Type
 file = open('data/route-cat-vs-pass-type.txt','w')
-df_grouped = df.groupby(['Trip Route Category','Passholder Type'])
+df_grouped = df.groupby(['Passholder Type'])
 for name, group in df_grouped:
-	print(name, len(group))#, group.value_counts())
+	print(group['Trip Route Category'].value_counts()[0])
+	percent = group['Trip Route Category'].value_counts()[0]/len(group)
+	file.write(str(name) + ": " + str(percent*100) + '% were One-Way\n')#, group.value_counts())
 
 
 plt.show()

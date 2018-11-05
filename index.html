@@ -17,7 +17,7 @@ body, html {
 
   .bg
   {
-    background-image: url('https://cdn.vox-cdn.com/uploads/chorus_image/image/51340845/29043874872_788d992b9a_k.0.jpg');
+    
 
     height: 100%; 
     width: 100%;
@@ -60,37 +60,57 @@ body, html {
           Passes
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Breakdown</a>
-          <a class="dropdown-item" href="#">Monthly Activity</a>
+          <a class="dropdown-item" href="#passes_breakdown">Breakdown</a>
+          <a class="dropdown-item" href="#passes_daily">Daily Activity</a>
+          <a class="dropdown-item" href="#passes_monthly">Monthly Activity</a>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Bikes</a>
+        <a class="nav-link" href="#bikes">Bikes</a>
       </li>
     </ul>
   </div>
 </nav>
 
 
-<h1 id=home class="container-fluid bg">
+<div id=home class="container-fluid bg" style="background-image: url('https://cdn.vox-cdn.com/uploads/chorus_image/image/51340845/29043874872_788d992b9a_k.0.jpg')">
   <div style="position:absolute;  top:50%">
-    Analysis of real bike share data in Los Angeles.
+    Analysis of bike share data in Los Angeles
   </div>
-</h1>
+  <div style="position:absolute;  top:70%; text-align:center; font-size:40px">
+    by Charlie Todd
+  </div>
+</div>
 
 <div id=stations class=section>
   <div id=station_most_popular>
     Most popular stations.
     <div class="container">
       <div class="row">
-        <div id="start/start_heatmap_url" class="col">
-          First, but unordered
+        <div id="start_heatmap_url" class="col">
+          
+        </div>
+        <div id="end_heatmap_url" class="col">
+          
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          Figure 1. Most popular stations to start rides.
         </div>
         <div class="col">
-          Second, but last
+          Figure 2. Most popular stations to end rides.
         </div>
-  </div>
-</div>
+      </div>
+      <div class="row">
+        <div id="start_heatmap_url_table" class="col">
+          
+        </div>
+        <div id="end_heatmap_url_table" class="col">
+          
+        </div>
+      </div>
+    </div>
   </div>
   <div id=station_monthly>
     Station monthly activity.
@@ -100,19 +120,132 @@ body, html {
   </div>
   <div id=station_walkup>
     Station walkup data.
+    <div class=container>
+      <div class="row">
+      <div id="walkup_start_heatmap_url" class="col">
+      </div>
+        <div class="col" id="walkup_start_heatmap_url_table">
+          
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+        
+        </div>
+      </div>
+      <div class="row">
+        
+      </div>
+    </div>
   </div>
 </div>
+  
 <div id=passes class=section>
   <div id=passes_breakdown>
-    Breakdown of passes.
+    <h2>
+      Approximately 68% of riders use bikeshare as part of their everyday commute*.
+    </h2>
+    <h6>
+    *Statistic computed by considering flex-pass and monthly-pass holders as everday users.
+    </h6>
+    <h3>
+      Breakdown of trip route category and pass type combinations:
+    </h3>
+    <table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Pass Type</th>
+      <th scope="col">% One-Way Trips</th>
+      <th scope="col">% Round Trips</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Flex</th>
+      <td>94.9%</td>
+      <td>5.1%</td>
+    </tr>
+    <tr>
+      <th scope="row">Monthly</th>
+      <td>95.3%</td>
+      <td>4.7%</td>
+    </tr>
+    <tr>
+      <th scope="row">Walk-up</th>
+      <td>79.5%</td>
+      <td>20.5%</td>
+    </tr>
+    <tr>
+      <th scope="row">Staff Annual</th>
+      <td>78.3%</td>
+      <td>21.7%</td>
+    </tr>
+  </tbody>
+</table>
+  </div>
+  <div id=passes_daily>
+    Daily activity for passes.
+    <div class=container>
+      <div class="row">
+        <div class="col">
+          <img src="data/line-graphs/frequency-vs-hour.png" height=250 width=500>
+        </div>
+   
+      </div>
+    </div>
   </div>
   <div id=passes_monthly>
     Monthly activity for passes.
+    <div class=container>
+      <div class="row">
+        <div class="col">
+          <img src="data/line-graphs/frequency-vs-month.png" height=250 width=500>
+        </div>
+        <div class="col">
+          <img src="data/line-graphs/duration-vs-month.png" height=250 width=500>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+  
 <div id=bikes class=section>
-  Average distance: something.<br>
-  Duration vs. month
+  
+  
+  <h2>
+    Average distance travelled*: <i>.31 miles</i> <br>
+  </h2>
+  <h6 style="text-align:left">
+    *Statistic computed by performing the following steps:
+    <ol>
+      <li>taking a random sample of the data (for cost and speed efficiency)</li>
+      <li>using Google's Distance Matrix API to compute shortest distance between start and end of each point</li>
+      <li>computing the haversine distance on these points</li>
+      <li>determining the ratio between these two calculations, and</li>
+      <li>applying this ratio to the average haversine distance of the whole dataset.</li>
+    </ol>
+  </h6>
+       
+  <div id=dur_vs_month>
+    <div class=container>
+      <div class="row">
+        <div class="col">
+          <img src="data/line-graphs/bike-ids-5798-5801-5885-5904-5940.png" height=250 width=500>
+        </div>
+        <div class="col">
+          <img src="data/line-graphs/bike-ids-5974-5975-5987-6010-6099.png" height=250 width=500>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <img src="data/line-graphs/bike-ids-6182-6209-6212-6324-6334.png" height=250 width=500>
+        </div>
+        <div class="col">
+          <img src="data/line-graphs/bike-ids-6385-6386-6400-6413-6553.png" height=250 width=500>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -124,24 +257,102 @@ body, html {
 </body>
 <script>
 
-  load_heatmap(document.getElementById("start/start_heatmap_url"));
+  var maps = ["start_heatmap_url","end_heatmap_url","walkup_start_heatmap_url"];
+  var i;
+  for (i = 0; i < maps.length; i++)
+    load_heatmap(document.getElementById(maps[i]));
+  
+ 
+  
+  
+  
+  
   function load_heatmap(element)
   {
+    //element = document.getElementById(url);
     filename = "data/heatmaps/" + element.id + ".txt";
     var request = new XMLHttpRequest();
     request.open('GET',filename);
     request.send();
     request.onload = function() {
-      url = request.response;
+      var map_url = request.response;
       console.log("request is being loaded");
-      //console.log(sounds_json[0]);
-      console.log(url);
+      console.log(map_url);
       var map = document.createElement("img");
-      map.setAttribute("src",url);
+      map.setAttribute("src",map_url);
       map.setAttribute("alt","failed");
+      map.setAttribute("height",500);
+      map.setAttribute("width",500);
       element.appendChild(map);
+      if (element.id == "walkup_start_heatmap_url")
+      {
+        var text = document.createTextNode("Figure 3. Most popular stations for walk-up passes to be used.");
+        element.appendChild(text);
+      }
+      load_heatmap_table(document.getElementById(element.id + "_table"));
     }
   }
+    
+    function load_heatmap_table(element)
+    {
+      //element = document.getElementById(url);
+      filename = "data/heatmaps/" + element.id + ".json";
+      var request = new XMLHttpRequest();
+      request.open('GET',filename);
+      request.responseType = "json";
+      request.send();
+      request.onload = function() {
+        var map_table_json = request.response;
+        console.log("request is being loaded");
+        console.log(map_table_json);
+        var map_table = document.createElement("table");
+        map_table.setAttribute("class","table table-striped table-sm table-hover");
+        var header = document.createElement("thead");
+        var header_tr = document.createElement("tr");
+        var letter = document.createElement("th");
+        letter.setAttribute("scope","col");
+        letter.innerText = "Letter";
+        
+        var stationid = document.createElement("th");
+        stationid.setAttribute("scope","col");
+        stationid.innerText = "Station ID";
+        
+        var count = document.createElement("th");
+        count.setAttribute("scope","col");
+        count.innerText = "Count";
+        
+        header_tr.appendChild(letter);
+        header_tr.appendChild(stationid);
+        header_tr.appendChild(count);
+        header.appendChild(header_tr);
+        map_table.appendChild(header);
+        
+        var tbody = document.createElement("tbody");
+        for (j in map_table_json)
+        {
+          console.log(j);
+          var tr = document.createElement("tr");
+          var th = document.createElement("th");
+          th.setAttribute("scope","row");
+          th.innerText = j;
+          var td1 = document.createElement("td");
+          td1.innerText = map_table_json[j][0];
+          var td2 = document.createElement("td");
+          td2.innerText = map_table_json[j][1];
+          tr.appendChild(th);
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          tbody.appendChild(tr);
+          
+        }
+        map_table.appendChild(tbody);
+        element.appendChild(map_table);
+        
+      }
+    }
+    
+    
+  
 
 </script>   
 </html>

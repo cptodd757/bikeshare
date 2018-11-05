@@ -1,0 +1,4 @@
+Flex Pass: 94.92487128296733% were One-Way
+Monthly Pass: 95.36062186362294% were One-Way
+Staff Annual: 78.27225130890052% were One-Way
+Walk-up: 79.5095090238696% were One-Way

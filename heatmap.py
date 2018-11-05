@@ -27,7 +27,9 @@ def heatmap(df, counts, filename, base_color, startOrEnd):
 		if i > 25:
 			char = 'a'
 		else:
-			map_legend[char] = str(counts.index[i])
+			map_legend[char] = []
+			map_legend[char].append(str(counts.index[i]))
+			map_legend[char].append(str(counts.values[i]))
 		map_url += "&markers=color:" + color + "|size:mid|label:" + char + "|" + str(lat) + "," + str(longg)
 	map_url += "&key=AIzaSyB4RyqCQ38yvJPqvC8lT8jJOqyJL52MrAA"
 	#print(start_map_url)
