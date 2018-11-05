@@ -317,8 +317,13 @@ body, html {
         stationid.setAttribute("scope","col");
         stationid.innerText = "Station ID";
         
+        var count = document.createElement("th");
+        count.setAttribute("scope","col");
+        count.innerText = "Count";
+        
         header_tr.appendChild(letter);
         header_tr.appendChild(stationid);
+        header_tr.appendChild(count);
         header.appendChild(header_tr);
         map_table.appendChild(header);
         
@@ -330,10 +335,13 @@ body, html {
           var th = document.createElement("th");
           th.setAttribute("scope","row");
           th.innerText = j;
-          var td = document.createElement("td");
-          td.innerText = map_table_json[j];
+          var td1 = document.createElement("td");
+          td1.innerText = map_table_json[j][0];
+          var td2 = document.createElement("td");
+          td2.innerText = map_table_json[j][1];
           tr.appendChild(th);
-          tr.appendChild(td);
+          tr.appendChild(td1);
+          tr.appendChild(td2);
           tbody.appendChild(tr);
           
         }
