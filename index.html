@@ -119,30 +119,30 @@ body, html {
   <div id=station_daily>
     Station daily activity.
     <div class="btn-group" role="group" aria-label="Basic example">
-      <button id=00 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">00</button>
-      <button id=01 type="button" class="btn btn-secondary">01</button>
-      <button id=02 type="button" class="btn btn-secondary">02</button>
-      <button id=03 type="button" class="btn btn-secondary">03</button>
-      <button id=04 type="button" class="btn btn-secondary">04</button>
-      <button id=05 type="button" class="btn btn-secondary">05</button>
-      <button id=06 type="button" class="btn btn-secondary">06</button>
-      <button id=07 type="button" class="btn btn-secondary">07</button>
-      <button id=08 type="button" class="btn btn-secondary">08</button>
-      <button id=09 type="button" class="btn btn-secondary">09</button>
-      <button id=10 type="button" class="btn btn-secondary">10</button>
-      <button id=11 type="button" class="btn btn-secondary">11</button>
-      <button id=12 type="button" class="btn btn-secondary">12</button>
-      <button id=13 type="button" class="btn btn-secondary">13</button>
-      <button id=14 type="button" class="btn btn-secondary">14</button>
-      <button id=15 type="button" class="btn btn-secondary">15</button>
-      <button id=16 type="button" class="btn btn-secondary">16</button>
-      <button id=17 type="button" class="btn btn-secondary">17</button>
-      <button id=18 type="button" class="btn btn-secondary">18</button>
-      <button id=19 type="button" class="btn btn-secondary">19</button>
-      <button id=20 type="button" class="btn btn-secondary">20</button>
-      <button id=21 type="button" class="btn btn-secondary">21</button>
-      <button id=22 type="button" class="btn btn-secondary">22</button>
-      <button id=23 type="button" class="btn btn-secondary">23</button>
+      <button name=hour id=hour00 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">00</button>
+      <button name=hour id=hour01 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">01</button>
+      <button name=hour id=hour02 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">02</button>
+      <button name=hour id=hour03 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">03</button>
+      <button name=hour id=hour04 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">04</button>
+      <button name=hour id=hour05 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">05</button>
+      <button name=hour id=hour06 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">06</button>
+      <button name=hour id=hour07 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">07</button>
+      <button name=hour id=hour08 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">08</button>
+      <button name=hour id=hour09 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">09</button>
+      <button name=hour id=hour10 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">10</button>
+      <button name=hour id=hour11 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">11</button>
+      <button name=hour id=hour12 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">12</button>
+      <button name=hour id=hour13 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">13</button>
+      <button name=hour id=hour14 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">14</button>
+      <button name=hour id=hour15 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">15</button>
+      <button name=hour id=hour16 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">16</button>
+      <button name=hour id=hour17 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">17</button>
+      <button name=hour id=hour18 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">18</button>
+      <button name=hour id=hour19 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">19</button>
+      <button name=hour id=hour20 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">20</button>
+      <button name=hour id=hour21 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">21</button>
+      <button name=hour id=hour22 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">22</button>
+      <button name=hour id=hour23 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">23</button>
     </div>
   </div>
   <div id=station_walkup>
@@ -383,7 +383,7 @@ body, html {
       }
     }
   
-    function create_heatmap_element(filename)
+    function append_heatmap_element(element, filename)
   {
      var request = new XMLHttpRequest();
      request.open('GET',filename);
@@ -397,7 +397,8 @@ body, html {
       map.setAttribute("alt","failed");
       map.setAttribute("height",500);
       map.setAttribute("width",500);
-      return map;
+      element.appendChild(map);
+      
      }
   }
   
@@ -406,8 +407,8 @@ body, html {
     console.log("clicked!");
     var parent = element.parentNode.parentNode;
     var id = element.id;
-    filename = "data/heatmaps/start/" + element.id + ".txt";
-    parent.appendChild(create_heatmap_element(filename));
+    var filename = "data/heatmaps/" + element.name + "s/start/" + element.id + "start_heatmap_url.txt";
+    append_heatmap_element(parent,filename);
   }
     
     
