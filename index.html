@@ -196,8 +196,8 @@ body, html {
         var map_table_json = request.response;
         console.log("request is being loaded");
         console.log(map_table_json);
-        var map_table = document.createElement("table table-striped table-sm");
-        map_table.setAttribute("class","table");
+        var map_table = document.createElement("table");
+        map_table.setAttribute("class","table table-striped table-sm");
         var header = document.createElement("thead");
         var header_tr = document.createElement("tr");
         var letter = document.createElement("th");
