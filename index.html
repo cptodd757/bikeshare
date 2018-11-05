@@ -72,14 +72,14 @@ body, html {
 </nav>
 
 
-<h1 id=home class="container-fluid bg">
+<div id=home class="container-fluid bg">
   <div style="position:absolute;  top:50%">
     Analysis of bike share data in Los Angeles.
   </div>
   <div style="position:absolute;  top:70%; text-align:center; font-size:40px">
     by Charlie Todd
   </div>
-</h1>
+</div>
 
 <div id=stations class=section>
   <div id=station_most_popular>
@@ -99,6 +99,14 @@ body, html {
         </div>
         <div class="col">
           Figure 2. Most popular stations to end rides.
+        </div>
+      </div>
+      <div class="row">
+        <div id="start_heatmap_url_table" class="col">
+          
+        </div>
+        <div id="end_heatmap_url_table" class="col">
+          
         </div>
       </div>
     </div>
@@ -142,25 +150,61 @@ body, html {
   var maps = ["start_heatmap_url","end_heatmap_url","walkup_start_heatmap_url"];
   var i;
   for (i = 0; i < maps.length; i++)
-    load_heatmap(document.getElementById(maps[i]));
-  function load_heatmap(element)
+    load_heatmap(maps[i]);
+  function load_heatmap(url)
   {
-    filename = "data/heatmaps/" + element.id + ".txt";
+    element = document.getElementByID(url);
+    filename = "data/heatmaps/" + url + ".txt";
     var request = new XMLHttpRequest();
     request.open('GET',filename);
     request.send();
     request.onload = function() {
-      url = request.response;
+      var map_url = request.response;
       console.log("request is being loaded");
-      //console.log(sounds_json[0]);
-      console.log(url);
+      console.log(map_url);
       var map = document.createElement("img");
-      map.setAttribute("src",url);
+      map.setAttribute("src",map_url);
       map.setAttribute("alt","failed");
       map.setAttribute("height",500);
       map.setAttribute("width",500);
       element.appendChild(map);
+      load_heatmap_table(url + "_table");
     }
+    
+    function load_heatmap_table(url)
+    {
+      element = document.getElementByID(url);
+      filename = "data/heatmaps/" + url + ".json";
+      var request = new XMLHttpRequest();
+      request.open('GET',filename);
+      request.responseType = "json";
+      request.send();
+      request.onload = function() {
+        var map_table_url = request.response;
+        console.log("request is being loaded");
+        console.log(map_table_url);
+        var map_table = document.createElement("table");
+        map_table.setAttribute("class","table");
+        var header = document.createElement("thead");
+        var header_tr = document.createElement("tr");
+        var letter = document.createElement("th");
+        letter.setAttribute("scope","col");
+        letter.innerText = "Letter";
+        
+        var stationid = document.createElement("th");
+        stationid.setAttribute("scope","col");
+        stationid.innerText = "Station ID";
+        
+        header_tr.appendChild(letter);
+        header_tr.appendChild(stationid);
+        header.appendChild(header_tr);
+        map_table.appendChild(header);
+        
+      
+    }
+    
+    
+    
   }
 
 </script>   
