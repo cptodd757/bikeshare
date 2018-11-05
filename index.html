@@ -56,16 +56,16 @@ body, html {
         </div>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#passes" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Passes
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Breakdown</a>
-          <a class="dropdown-item" href="#">Monthly Activity</a>
+          <a class="dropdown-item" href="#passes_breakdown">Breakdown</a>
+          <a class="dropdown-item" href="#passes_monthly">Monthly Activity</a>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Bikes</a>
+        <a class="nav-link" href="#bikes">Bikes</a>
       </li>
     </ul>
   </div>
@@ -127,7 +127,7 @@ body, html {
         </div>
       </div>
       <div class="row">
-        <div  class="col">
+        <div class="col">
         Figure 3. Most popular stations for walk-up passes to be used.
         </div>
       </div>
@@ -154,11 +154,11 @@ body, html {
   <h6 style="text-align:left">
     *Statistic computed by performing the following steps:
     <ol>
-      <li>taking a random sample of the data</li>
+      <li>taking a random sample of the data (for cost and speed efficiency)</li>
       <li>using Google's Distance Matrix API to compute shortest distance between start and end of each point</li>
       <li>computing the haversine distance on these points</li>
       <li>determining the ratio between these two calculations, and</li>
-      <li>applying this ratio to the average haversine distance of the whole dataset.<li>
+      <li>applying this ratio to the average haversine distance of the whole dataset.</li>
     </ol>
   </h6>
        
@@ -166,27 +166,22 @@ body, html {
     <div class=container>
       <div class="row">
         <div class="col">
-          <img src="data/line-graphs/bike-ids-5798-5801-5885-5904-5940.png" height=500 width=500>
+          <img src="data/line-graphs/bike-ids-5798-5801-5885-5904-5940.png" height=500 width=250>
         </div>
         <div class="col">
-          <img src="data/line-graphs/bike-ids-5974-5975-5987-6010-6099.png" height=500 width=500>
+          <img src="data/line-graphs/bike-ids-5974-5975-5987-6010-6099.png" height=500 width=250>
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <img src="data/line-graphs/bike-ids-6182-6209-6212-6324-6334.png" height=500 width=500>
+          <img src="data/line-graphs/bike-ids-6182-6209-6212-6324-6334.png" height=500 width=250>
         </div>
         <div class="col">
-          <img src="data/line-graphs/bike-ids-6385-6386-6400-6413-6553.png" height=500 width=500>
+          <img src="data/line-graphs/bike-ids-6385-6386-6400-6413-6553.png" height=500 width=250>
         </div>
       </div>
     </div>
   </div>
-                  
-  Duration vs. month
-    <img src="data/line-graphs/bike-ids-5798-5801-5885-5904-5940.png>
-  </div>
-    
 </div>
 
 
