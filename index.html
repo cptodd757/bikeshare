@@ -148,10 +148,24 @@ body, html {
 <div id=bikes class=section>
   
   
-  <h1 style="background-image: url('https://cdn.vox-cdn.com/uploads/chorus_image/image/51340845/29043874872_788d992b9a_k.0.jpg')">
-    Average distance: <i>.31 miles</i> <br>
-  <h1>
+  <h1 style="height:50%; background-image: url('https://cdn.vox-cdn.com/uploads/chorus_image/image/51340845/29043874872_788d992b9a_k.0.jpg')">
+    Average distance travelled*: <i>.31 miles</i> <br>
+  </h1>
+  <h6>
+    *Statistic computed by performing the following steps:
+    <ol>
+      <li>taking a random sample of the data</li>
+      <li>using Google's Distance Matrix API to compute shortest distance between start and end of each point</li>
+      <li>computing the haversine distance on these points</li>
+      <li>determining the ratio between these two calculations, and</li>
+      <li>applying this ratio to the average haversine distance of the whole dataset.<li>
+    </ol>
+  </h6>
+       
+  <div id=dur_vs_month>
   Duration vs. month
+  </div>
+    
 </div>
 
 
