@@ -153,7 +153,7 @@ body, html {
     load_heatmap(maps[i]);
   function load_heatmap(url)
   {
-    element = document.getElementByID(url);
+    element = document.getElementById(url);
     filename = "data/heatmaps/" + url + ".txt";
     var request = new XMLHttpRequest();
     request.open('GET',filename);
@@ -181,9 +181,9 @@ body, html {
       request.responseType = "json";
       request.send();
       request.onload = function() {
-        var map_table_url = request.response;
+        var map_table_json = request.response;
         console.log("request is being loaded");
-        console.log(map_table_url);
+        console.log(map_table_json);
         var map_table = document.createElement("table");
         map_table.setAttribute("class","table");
         var header = document.createElement("thead");
