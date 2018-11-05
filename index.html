@@ -83,7 +83,7 @@ body, html {
     Most popular stations.
     <div class="container">
       <div class="row">
-        <div id="start/start_heatmap_url" class="col">
+        <div id="start_heatmap_url" class="col">
           First, but unordered
         </div>
         <div class="col">
@@ -124,7 +124,7 @@ body, html {
 </body>
 <script>
 
-  load_heatmap(document.getElementById("start/start_heatmap_url"));
+  load_heatmap(document.getElementById("start_heatmap_url"));
   function load_heatmap(element)
   {
     filename = "data/heatmaps/" + element.id + ".txt";
