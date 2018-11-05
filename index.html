@@ -409,7 +409,10 @@ body, html {
     console.log("clicked!");
     var parent = element.parentNode.parentNode;
     var id = element.id;
-    parent.removeChild(document.getElementById(parent.name));
+    var child = document.getElementById(parent.name);
+    console.log(child);
+    if (child != null)
+      parent.removeChild(child);
     var filename = "data/heatmaps/" + element.name + "s/start/" + element.id + "start_heatmap_url.txt";
     append_heatmap_element(parent,filename);
   }
