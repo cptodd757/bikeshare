@@ -74,7 +74,7 @@ body, html {
 
 <h1 id=home class="container-fluid bg">
   <div style="position:absolute;  top:50%">
-    Analysis of real bike share data in Los Angeles.
+    Analysis of bike share data in Los Angeles.
   </div>
 </h1>
 
@@ -98,8 +98,7 @@ body, html {
           Figure 2. Most popular stations to end rides.
         </div>
       </div>
-  </div>
-</div>
+    </div>
   </div>
   <div id=station_monthly>
     Station monthly activity.
@@ -109,6 +108,10 @@ body, html {
   </div>
   <div id=station_walkup>
     Station walkup data.
+    <div class=container>
+      <div id="walkup_start_heatmap_url">
+      </div>
+    </div>
   </div>
 </div>
 <div id=passes class=section>
@@ -133,7 +136,7 @@ body, html {
 </body>
 <script>
 
-  var maps = ["start_heatmap_url","end_heatmap_url"];
+  var maps = ["start_heatmap_url","end_heatmap_url","walkup_start_heatmap_url"];
   var i;
   for (i = 0; i < maps.length; i++)
     load_heatmap(document.getElementById(maps[i]));
@@ -151,8 +154,8 @@ body, html {
       var map = document.createElement("img");
       map.setAttribute("src",url);
       map.setAttribute("alt","failed");
-      map.setAttribute("height",400);
-      map.setAttribute("width",400);
+      map.setAttribute("height",500);
+      map.setAttribute("width",500);
       element.appendChild(map);
     }
   }
