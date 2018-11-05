@@ -1,1 +1,4 @@
+Actual distance sample mean: 
 1655.1363636363637
+Predicted actual distance population mean: 
+1639.4207945316648

@@ -148,13 +148,19 @@ hd_pop_mean = np.nanmean(remove_zeros(list(df['haversine_distance'].values)))
 
 if use_cloud_credits:
 	meanfile = open('data/google_distances_mean.txt','w')
-	meanfile.write(ad_sample_mean)
+	meanfile.write("sample mean: " + str(ad_sample_mean))
+	meanfile.close()
 else:
 	meanfile = open('data/google_distances_mean.txt','r')
-	ad_sample_mean = float(meanfile.read())
+	meanfile.readline()
+	ad_sample_mean = float(meanfile.readline())
+	meanfile.close()
 
+meanfile = open('data/google_distances_mean.txt','w')
 ratio = ad_sample_mean/hd_sample_mean
 predicted_ad_pop_mean = ratio * hd_pop_mean
+meanfile.write("Actual distance sample mean: \n" + str(ad_sample_mean))
+meanfile.write("\nPredicted actual distance population mean: \n" + str(predicted_ad_pop_mean))
 
 #4. Percentage of regular users
 file = open('data/percentage-regular-users.txt','w')
@@ -173,6 +179,7 @@ fig1, ax1 = plt.subplots(figsize=(12,6))
 
 #frequency vs. month 
 fig2, ax2 = plt.subplots(figsize=(12,6))
+
 for pass_type, group in df_grouped:
 	by_months = group.groupby(['Time Elapsed'])
 	means = by_months['Duration'].mean()
