@@ -397,6 +397,8 @@ body, html {
       map.setAttribute("alt","failed");
       map.setAttribute("height",500);
       map.setAttribute("width",500);
+      map.setAttribute("id","map");
+      element.setAttribute("name","map");
       element.appendChild(map);
       
      }
@@ -407,6 +409,7 @@ body, html {
     console.log("clicked!");
     var parent = element.parentNode.parentNode;
     var id = element.id;
+    parent.removeChild(document.getElementByID(parent.name));
     var filename = "data/heatmaps/" + element.name + "s/start/" + element.id + "start_heatmap_url.txt";
     append_heatmap_element(parent,filename);
   }
