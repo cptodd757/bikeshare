@@ -124,8 +124,10 @@ body, html {
       <div id="walkup_start_heatmap_url" class="col">
       </div>
       </div>
-      <div class="row" class="col">
+      <div class="row">
+        <div  class="col">
         Figure 3. Most popular stations for walk-up passes to be used.
+        </div>
       </div>
       <div class="row">
         <div class="col" id="walkup_start_heatmap_url_table">
@@ -213,8 +215,20 @@ body, html {
         var tbody = document.createElement("tbody");
         for (j in map_table_json)
         {
+          console.log(j);
+          var tr = document.createElement("tr");
+          var th = document.createElement("th");
+          th.setAttribute("scope","row");
+          th.innerText = j;
+          var td = document.createElement("td");
+          td.innerText = map_table_json[j];
+          tr.appendChild(th);
+          tr.appendChild(td);
+          tbody.appendChild(tr);
           
         }
+        map_table.appendChild(tbody);
+        element.appendChild(map_table);
           
         
         
