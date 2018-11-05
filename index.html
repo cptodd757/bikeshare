@@ -56,11 +56,12 @@ body, html {
         </div>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#passes" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Passes
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#passes_breakdown">Breakdown</a>
+          <a class="dropdown-item" href="#passes_daily">Daily Activity</a>
           <a class="dropdown-item" href="#passes_monthly">Monthly Activity</a>
         </div>
       </li>
@@ -137,14 +138,42 @@ body, html {
     </div>
   </div>
 </div>
+  
 <div id=passes class=section>
   <div id=passes_breakdown>
-    Breakdown of passes.
+    <h2>
+      Approximately 68% of riders use bikeshare as part of their everyday commute*.
+    </h2>
+    <h6 style="text-align:left">
+    *Statistic computed by considering flex-pass and monthly-pass holders as everday users.
+    </h6>
+  </div>
+  <div id=passes_daily>
+    Daily activity for passes.
+    <div class=container>
+      <div class="row">
+        
+          <img src="data/line-graphs/frequency-vs-hour.png" height=250 width=500>
+        
+   
+      </div>
+    </div>
   </div>
   <div id=passes_monthly>
     Monthly activity for passes.
+    <div class=container>
+      <div class="row">
+        <div class="col">
+          <img src="data/line-graphs/frequency-vs-month.png" height=250 width=500>
+        </div>
+        <div class="col">
+          <img src="data/line-graphs/duration-vs-month.png" height=250 width=500>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+  
 <div id=bikes class=section>
   
   
