@@ -409,7 +409,7 @@ body, html {
     console.log("clicked!");
     var parent = element.parentNode.parentNode;
     var id = element.id;
-    var child = document.getElementById(parent.name);
+    var child = document.getElementById(parent.getAttribute("name"));
     console.log(child);
     if (child != null)
       parent.removeChild(child);
