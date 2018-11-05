@@ -150,11 +150,11 @@ body, html {
   var maps = ["start_heatmap_url","end_heatmap_url","walkup_start_heatmap_url"];
   var i;
   for (i = 0; i < maps.length; i++)
-    load_heatmap(maps[i]);
-  function load_heatmap(url)
+    load_heatmap(document.getElementById(maps[i]));
+  function load_heatmap(element)
   {
-    element = document.getElementById(url);
-    filename = "data/heatmaps/" + url + ".txt";
+    //element = document.getElementById(url);
+    filename = "data/heatmaps/" + element.id + ".txt";
     var request = new XMLHttpRequest();
     request.open('GET',filename);
     request.send();
@@ -168,14 +168,14 @@ body, html {
       map.setAttribute("height",500);
       map.setAttribute("width",500);
       element.appendChild(map);
-      load_heatmap_table(url + "_table");
+      load_heatmap_table(document.getElementById(element.id + "_table"));
     }
   }
     
-    function load_heatmap_table(url)
+    function load_heatmap_table(element)
     {
-      element = document.getElementByID(url);
-      filename = "data/heatmaps/" + url + ".json";
+      //element = document.getElementById(url);
+      filename = "data/heatmaps/" + element.id + ".json";
       var request = new XMLHttpRequest();
       request.open('GET',filename);
       request.responseType = "json";
@@ -200,6 +200,9 @@ body, html {
         header_tr.appendChild(stationid);
         header.appendChild(header_tr);
         map_table.appendChild(header);
+        
+        var tbody = document.createElement("tbody");
+        
         
       }
     }
