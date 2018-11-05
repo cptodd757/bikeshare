@@ -47,6 +47,9 @@ body, html {
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Stations
         </a>
+        <li class="nav-item">
+        <a class="nav-link" href="#overview">Overview</a>
+        </li>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#station_most_popular">Most Popular</a>
           <a class="dropdown-item" href="#station_daily">Daily Activity</a>
@@ -81,7 +84,32 @@ body, html {
     by Charlie Todd
   </div>
 </div>
-
+<br>
+  <div id=overview class=section>
+    <h2>
+      Overview
+    </h2>
+    <h4>
+      This webpage aims to tackle a large dataset regarding bike-sharing in Los Angeles by identifying key trends and visualizing them in
+      ways that are both useful and interesting.  The application makes use of GitHub Pages for server support, Bootstrap for front-end design,
+      Google Maps APIs for data visualization, and a variety of Python packages for data analytics.  
+      <br>
+      The webpage is organized into three sections, addressing different bike stations, pass types, and specific bikes, respectively.
+      The first section addresses a number of points delineated in the project description: the important question of which stations 
+      are most popular, the bonus question regarding riding trends throughout the day, and two individually chosen trends (rides versus time of year
+      and the number of walkups at each station).  The latter is an important metric, because it can inform bikeshare companies where to focus
+      their efforts on advertising to customers who may be interested in more substantial membership plans.
+      
+      The second section addresses the question of how many bike-sharing customers are regular users of the service, while also investigating
+      the breakdown of pass type versus trip type and frequency of rides throughout the year.
+      
+      The final section displays the third individually chosen trend, which in this case concerns the average duration of trips with respect
+      to specific bikes as the year goes on.  It displays only those bikes which have seen a negative rate of change in average trip duration for
+      the final three months of the dataset's timeline, in the hopes that this may inform companies which bikes may be likely to be in need of repair.
+      (The logic here is that people may prematurely end their bike rides if they feel that the vehicle itself is not fully suited for sustained riding.)
+      This section also displays the average distance travelled on the bike rides in the dataset, whose calculation is explained in the section.
+    </h4>
+                                 
   <br>
 <div id=stations class=section>
   <div id=station_most_popular>
