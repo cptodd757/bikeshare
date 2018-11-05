@@ -82,6 +82,7 @@ body, html {
   </div>
 </div>
 
+  <br>
 <div id=stations class=section>
   <div id=station_most_popular>
     <h2>
@@ -132,10 +133,12 @@ body, html {
       <button name=month id=Feb17 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">Feb17</button>
       <button name=month id=Mar17 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">Mar17</button>
     </div>
+    <br>
   </div>
+  <br>
   <div id=station_daily>
      <h2>
-    Daily activity per station: click to view different months!
+    Daily activity per station: click to view different times of day!
     </h2>
     <br>
     <div class="btn-group" role="group" aria-label="Basic example">
@@ -164,7 +167,9 @@ body, html {
       <button name=hour id=hour22 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">22</button>
       <button name=hour id=hour23 type="button" class="btn btn-secondary" onclick="click_load_heatmap(this)">23</button>
     </div>
+    <br>
   </div>
+  <br>
   <div id=station_walkup>
      <h2>
     Most popular stations for walk-up pass types:
@@ -420,8 +425,8 @@ body, html {
       map.setAttribute("alt","failed");
       map.setAttribute("height",500);
       map.setAttribute("width",500);
-      map.setAttribute("id","map");
-      element.setAttribute("name","map");
+      map.setAttribute("id",filename);
+      element.setAttribute("name",filename);
       element.appendChild(map);
       
      }
