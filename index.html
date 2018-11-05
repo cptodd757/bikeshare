@@ -83,7 +83,7 @@ body, html {
     Most popular stations.
     <div class="container">
       <div class="row">
-        <div class="col">
+        <div id="start_heatmap_url" class="col">
           First, but unordered
         </div>
         <div class="col">
@@ -124,9 +124,10 @@ body, html {
 </body>
 <script>
 
-  function load_heatmap()
+  load_heatmap($("#start_heatmap_url"));
+  function load_heatmap(element)
   {
-    filename = "data/heatmaps/end_heatmap_url.txt";
+    filename = "data/heatmaps/" + element.id + ".txt";
     var request = new XMLHttpRequest();
     request.open('GET',filename);
     request.send();
@@ -138,7 +139,7 @@ body, html {
       var map = document.createElement("img");
       map.setAttribute("src",url);
       map.setAttribute("alt","failed");
-      document.body.appendChild(map)
+      element.appendChild(map)
     }
   }
 
