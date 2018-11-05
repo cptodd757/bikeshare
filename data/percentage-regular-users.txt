@@ -1,0 +1,3 @@
+Total users: 132427
+Regular users (non-walk-ups): 90437
+Percentage of users who are regular: 68.29%

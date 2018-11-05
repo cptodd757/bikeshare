@@ -5,9 +5,10 @@ import time
 import json
 import urllib3
 import certifi
+from heatmap import heatmap
+from haversine import haversine_distance
 
 use_cloud_credits = False
-
 
 # 1. Data Visuals: Display or graph 3 metrics or trends from the data set that are interesting to you.
 # 2. Which start/stop stations are most popular?
@@ -20,8 +21,7 @@ use_cloud_credits = False
 # where should bikes be transported in order to make sure bikes match travel patterns?
 # What is the breakdown of Trip Route Category-Passholder type combinations? What might make a particular combination more popular?
 
-
-df = pd.read_csv('metro-bike-share-trip-data.csv',low_memory=False)
+df = pd.read_csv('data/metro-bike-share-trip-data.csv',low_memory=False)
 
 def get_month(x):
 	return x[5:7]
@@ -29,65 +29,75 @@ def get_year(x):
 	return x[2:4]
 def months_since_start(x):
 	return int(x[5:7]) - 7 + 12*(int(x[2:4]) - 16)
+def get_specific_month(x):
+	months = ["July '16","August '16","September '16","October '16","November '16","December '16",
+			"January '17","February '17","March '17"]
+	return months[x]
 def numeric_time(x):
 	return int(pd.Timestamp(x).to_pydatetime().timestamp())
+def get_hour(x):
+	return x[-8:-6]
 df['Month'] = df['Start Time'].apply(get_month)
 df['Year'] = df['Start Time'].apply(get_year)
 df['Time Elapsed'] = df['Start Time'].apply(months_since_start)
+df['Month-Year'] = df['Time Elapsed'].apply(get_specific_month)
 df['Numeric Time'] = df['Start Time'].apply(numeric_time)
-print(df['Numeric Time'])
+df['Hour'] = df['Start Time'].apply(get_hour)
 
-
-#exit()
+def remove_zeros(array):
+	return [x for x in array if x != 0]
+def convert_to_months(indices, values):
+	months = ["July '16","August '16","September '16","October '16","November '16","December '16",
+			"January '17","February '17","March '17"]
+	indices = list(indices)
+	values = list(values)
+	for i in range(len(months)):
+		if i not in indices:
+			indices.insert(i, i)
+			values.insert(i, 0)
+	return [months[x] for x in indices], values
 
 #1. 3 interesting trends:
 #a. average duration of trip vs. months for each bike
-df_sorted = df.sort_values(['Bike ID','Year','Month'])
-df_grouped = df.groupby(['Bike ID','Time Elapsed'])['Duration'].mean()
-#df_grouped['Mean'] = df_grouped.apply(np.mean)
-print(df['Bike ID'].value_counts())
-print(df_grouped)
-#exit()
-#bike_ids = df['Bike ID'].value_counts().index[:10]
-bike_ids = list(df_grouped.index.levels[0])
-bike_ids = [int(x) for x in bike_ids]
-print(bike_ids)
+df_grouped = df.groupby(['Bike ID','Time Elapsed'])['Duration'].mean() 
+bike_ids = [int(x) for x in list(df_grouped.index.levels[0])]
 
-fig, ax = plt.subplots()
-fig_name = 'bike-ids'
+fig, ax = plt.subplots(figsize=(12,6))
+fig_name = 'data/line-graphs/bike-ids'
 count = 0
 for i in range(len(bike_ids)):
-	
 	bike_data = df_grouped[bike_ids[i]]
-	#print(bike_data.values)
-
 	if len(bike_data.values) > 3 and bike_data.values[-1] < bike_data.values[-2] and bike_data.values[-2] < bike_data.values[-3] and bike_data.values[-3] < bike_data.values[-4]:
-		ax.plot(bike_data.index, bike_data.values, label=bike_ids[i])
+		indices, values = convert_to_months(bike_data.index, bike_data.values)
+		ax.plot(indices, values, label=bike_ids[i])
 		ax.legend(title="Bike IDs")
 		fig_name = fig_name + '-' + str(bike_ids[i])
-		
-		
 		if (count+1)%5 == 0:
-		#plt.show()
-			ax.set_xlabel("Months since July 2016")
+			ax.set_xlabel("Month")
 			ax.set_ylabel("Average duration (sec) per month")
 			ax.set_title("Average Duration of Rides Each Month")
 			fig_name += '.png'
 			fig.savefig(fig_name)
-			#fig.set_title("Bike IDs")
-			fig, ax = plt.subplots()
-			fig_name = 'bike-ids'
+			fig, ax = plt.subplots(figsize=(12,6))
+			fig_name = 'data/line-graphs/bike-ids'
 		count += 1
-
-show = False
-if show:
-	plt.show()
-
 
 #b. Where are walkups most frequent
 walkup_counts = df.groupby(['Passholder Type']).get_group('Walk-up')['Starting Station ID'].dropna().astype(np.int32).value_counts()
-print(walkup_counts)
-#exit()
+heatmap(df,walkup_counts,'data/heatmaps/walkup_start_heatmap_url','blue','Starting')
+
+#c. popularity of each station versus month: 8 * 2 total heatmaps
+df_grouped = df.groupby(['Time Elapsed'])
+months = ["July '16","August '16","September '16","October '16","November '16","December '16",
+			"January '17","February '17","March '17"]
+m = 0
+for time, group in df_grouped:
+	start_ids_grouped = df_grouped.get_group(time).groupby(['Starting Station ID'])
+	month = months[m]
+	heatmap(df, group['Starting Station ID'].value_counts(), 'data/heatmaps/months/start/' + month[0:3] + month[-2:] + 'start_heatmap_url','blue','Starting')
+	heatmap(df, group['Ending Station ID'].value_counts(), 'data/heatmaps/months/end/' + month[0:3] + month[-2:] + 'end_heatmap_url','blue','Ending')
+	m += 1
+
 
 
 #2. Most popular start/stop stations
@@ -95,124 +105,23 @@ start_ids = df['Starting Station ID'].dropna().astype(np.int32)
 end_ids = df['Ending Station ID'].dropna().astype(np.int32)
 start_counts = start_ids.value_counts()
 end_counts = end_ids.value_counts()
-print(start_counts)
-
-def remove_zeros(array):
-	return [x for x in array if x != 0]
-
-
-#find min and max lat and long
-start_lats = remove_zeros(list(df['Starting Station Latitude'].dropna().values))
-end_lats = remove_zeros(list(df['Ending Station Latitude'].dropna().values))
-start_longs = remove_zeros(list(df['Starting Station Longitude'].dropna().values))
-end_longs = remove_zeros(list(df['Ending Station Longitude'].dropna().values))
-print('Minimum latitude: ',np.amin([np.amin(start_lats),np.amin(end_lats)]))
-print('Maximum latitude: ',np.amax([np.amax(start_lats),np.amax(end_lats)]))
-print('Minimum longitude: ',np.amin([np.amin(start_longs),np.amin(end_longs)]))
-print('Maximum longitude: ',np.amax([np.amax(start_longs),np.amax(end_longs)]))
-#end digression
-
-#def heatmap(counts, filename, color):
-
-
-def hue_strength(color,strength):
-	main_digits = hex(np.minimum(255, 383 - strength))[2:].zfill(2)
-	other_digits = hex(np.maximum(0, 255 - strength))[2:].zfill(2)
-	if color == 'blue':
-		return "0x"+other_digits+other_digits+main_digits
-	if color == 'red':
-		return "0x"+main_digits+other_digits+other_digits
-	if color == 'green':
-		return "0x"+other_digits+main_digits+other_digits
-
-#new df indexed by start id
-id_df = df.set_index("Starting Station ID")
-start_map_url = "https://maps.googleapis.com/maps/api/staticmap?size=640x640"
-max_count = np.amax(list(start_counts.values))
-print(len(start_counts.values))
-for i in range(len(start_counts)):
-	strength = int(255*start_counts.values[i]/max_count)
-	color = hue_strength('green',strength)
-	start_lat = id_df.loc[start_counts.index[i],"Starting Station Latitude"].iloc[0]
-	start_long = id_df.loc[start_counts.index[i],"Starting Station Longitude"].iloc[0]
-	if np.minimum(start_long,start_lat) == 0 or np.isnan(start_lat) or np.isnan(start_long):
-		continue
-	#manually get rid of two outliers, focus on heart of LA
-	if start_long < -118.3:
-		continue
-	print(start_lat,start_long)
-	char = chr(i+65)
-	if i > 25:
-		char = 'a'
-	start_map_url += "&markers=color:" + color + "|size:mid|label:" + char + "|" + str(start_lat) + "," + str(start_long)
-start_map_url += "&key=AIzaSyB4RyqCQ38yvJPqvC8lT8jJOqyJL52MrAA"
-print(start_map_url)
-start_map_url_file = open('start_map_url.txt','w')
-start_map_url_file.write(start_map_url)
-
-end_map_url = "https://maps.googleapis.com/maps/api/staticmap?size=640x640"
-max_count = np.amax(list(end_counts.values))
-for i in range(len(end_counts)):
-	strength = int(255*end_counts.values[i]/max_count)
-	color = hue_strength('red',strength)
-	end_lat = id_df.loc[end_counts.index[i],"Ending Station Latitude"].iloc[0]
-	end_long = id_df.loc[end_counts.index[i],"Ending Station Longitude"].iloc[0]
-	if np.minimum(end_long,end_lat) == 0 or np.isnan(end_lat) or np.isnan(end_long):
-		continue
-	#manually get rid of two outliers, focus on heart of LA
-	if end_long < -118.3:
-	 	continue
-	print(end_lat,end_long)
-	char = chr(i+65)
-	if i > 25:
-		char = 'a'
-	end_map_url += "&markers=color:" + color + "|size:mid|label:" + char + "|" + str(end_lat) + "," + str(end_long)
-end_map_url += "&key=AIzaSyB4RyqCQ38yvJPqvC8lT8jJOqyJL52MrAA"
-print(end_map_url)
-end_map_url_file = open('end_map_url.txt','w')
-end_map_url_file.write(end_map_url)
-
-
-
-fig1, ax1 = plt.subplots()
-ax1.bar(range(start_counts.size),list(start_counts.values),tick_label=list(start_counts.index))
-fig2, ax2 = plt.subplots()
-ax2.bar(range(end_counts.size),list(end_counts.values),tick_label=list(end_counts.index))
-plt.show()
-
-
-
-
-
-
+heatmap(df,start_counts,'data/heatmaps/start_heatmap_url','green','Starting')
+heatmap(df,end_counts,'data/heatmaps/end_heatmap_url','red','Ending')
 
 #3. Average distance traveled
-def hav(theta):
-	return (np.sin(theta/2))**2
-
-#returns distance in yards
-R = 3959
-def haversine_distance(start_lat,start_long,end_lat,end_long):
- 	temp = np.deg2rad(np.sqrt(hav(end_lat-start_lat)+np.cos(start_lat)*np.cos(end_lat)*hav(end_long-start_long)))
- 	temp = np.minimum(temp, 1)
- 	temp = np.maximum(temp, -1)
- 	return (5280/3)*2*R*np.arcsin(temp)
-
-df['haversine_distance'] = haversine_distance(df['Starting Station Latitude'],df['Starting Station Longitude'],df['Ending Station Latitude'],df['Ending Station Longitude'])	
-#query = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615,-73.9976592&mode=bicycling&key=AIzaSyB4RyqCQ38yvJPqvC8lT8jJOqyJL52MrAA"
+df['haversine_distance'] = haversine_distance(df['Starting Station Latitude'],df['Starting Station Longitude'],df['Ending Station Latitude'],df['Ending Station Longitude'],3959)	
 	
 sample = df.sample(n=100,random_state=900)
 actual_dists = []
 haversine_dists = []
 
-file = open('distance_matrix_API_1000_sample.txt','a')
+file = open('data/distance_matrix_API_100_sample.txt','a')
 for i in range(len(sample)):
-	#print(i)
 	start_lat = sample.iloc[i]['Starting Station Latitude']
 	start_long = sample.iloc[i]['Starting Station Longitude']
 	end_lat = sample.iloc[i]['Ending Station Latitude']
 	end_long = sample.iloc[i]['Ending Station Longitude']
-	hdist = haversine_distance(start_lat,start_long,end_lat,end_long)
+	hdist = haversine_distance(start_lat,start_long,end_lat,end_long,3959)
 	if hdist == 0.0:
 		continue
 	
@@ -222,16 +131,12 @@ for i in range(len(sample)):
 		query = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+str(start_lat)+","+str(start_long)+"&destinations="+str(end_lat)+","+str(end_long)+"&mode=bicycling&key=AIzaSyB4RyqCQ38yvJPqvC8lT8jJOqyJL52MrAA"
 		req = http.request('GET', query, headers=headers)
 		page = req.data.decode('utf-8')
-		print(page)
 		data = json.loads(page)
-		
 		if "distance" not in data["rows"][0]["elements"][0]:
 			continue
 		actual_dists.append(data["rows"][0]["elements"][0]["distance"]["value"])
-		print(data["rows"][0]["elements"][0]["distance"]["text"])
 		json.dump(data,file)
 		file.write('\n')
-
 	haversine_dists.append(hdist)
 
 for dist in actual_dists:
@@ -239,30 +144,81 @@ for dist in actual_dists:
 	file.write('\n')
 hd_sample_mean = np.nanmean(haversine_dists)
 ad_sample_mean = np.nanmean(actual_dists)
-print(haversine_dists)
-print(actual_dists)
-
 hd_pop_mean = np.nanmean(remove_zeros(list(df['haversine_distance'].values)))
 
 if use_cloud_credits:
-	meanfile = open('google_distances_mean.txt','w')
+	meanfile = open('data/google_distances_mean.txt','w')
 	meanfile.write(ad_sample_mean)
 else:
-	meanfile = open('google_distances_mean.txt','r')
+	meanfile = open('data/google_distances_mean.txt','r')
 	ad_sample_mean = float(meanfile.read())
 
-print(hd_pop_mean)
-print(hd_sample_mean)
-print(ad_sample_mean)
-
 ratio = ad_sample_mean/hd_sample_mean
-
 predicted_ad_pop_mean = ratio * hd_pop_mean
-print(predicted_ad_pop_mean)
 
 #4. Percentage of regular users
+file = open('data/percentage-regular-users.txt','w')
 total = len(df)
 regular = len(remove_zeros(list(df['Plan Duration'].dropna().values)))
-print("Total users: ",total)
-print("Regular users (non-walk-ups): ", regular)
-print("Percentage of users who are regular: "+str(np.round(100*regular/total,2))+"%")
+file.write("Total users: " + str(total) + '\n')
+file.write("Regular users (non-walk-ups): " + str(regular) + '\n')
+file.write("Percentage of users who are regular: "+str(np.round(100*regular/total,2))+"%")
+
+#Bonus:
+#a. change over seasons: duration vs. time and freq vs. time, each type of pass gets its own line
+df_grouped = df.groupby(['Passholder Type'])
+
+#duration vs. month
+fig1, ax1 = plt.subplots(figsize=(12,6))
+
+#frequency vs. month 
+fig2, ax2 = plt.subplots(figsize=(12,6))
+for pass_type, group in df_grouped:
+	by_months = group.groupby(['Time Elapsed'])
+	means = by_months['Duration'].mean()
+	indices, values = convert_to_months(means.index, means.values)
+	ax1.plot(indices, values, label=pass_type)
+
+	counts = group['Time Elapsed'].value_counts().sort_index()
+	indices, values = convert_to_months(counts.index, counts.values)
+	ax2.plot(indices, values, label=pass_type)
+
+ax1.set_xlabel("Month")
+ax1.set_ylabel("Average duration of rides (seconds)")
+ax1.set_title("Duration of Rides vs. Time of Year")
+ax1.legend(title="Pass Type")
+fig1.savefig('data/line-graphs/duration-vs-month.png')
+
+ax2.set_xlabel("Month")
+ax2.set_ylabel("Number of rides")
+ax2.set_title("Number of Rides vs. Time of Year")
+ax2.legend(title="Pass Type")
+fig2.savefig('data/line-graphs/frequency-vs-month.png')
+
+#b. popularity vs. time of day for each station
+df_grouped = df.groupby(['Hour'])
+for time, group in df_grouped:
+	start_ids_grouped = df_grouped.get_group(time).groupby(['Starting Station ID'])
+	heatmap(df, group['Starting Station ID'].value_counts(), 'data/heatmaps/hours/start/hour' + group['Hour'].iloc[0] + 'start_heatmap_url','blue','Starting')
+	heatmap(df, group['Ending Station ID'].value_counts(), 'data/heatmaps/hours/end/hour' + group['Hour'].iloc[0] + 'end_heatmap_url','blue','Ending')
+
+df_grouped = df.groupby(['Passholder Type'])
+fig, ax = plt.subplots(figsize=(12,6))
+for pass_type, group in df_grouped:
+	counts = group['Hour'].value_counts().sort_index()
+	ax.plot(counts.index, counts.values, label=pass_type)
+
+ax.set_xlabel("Time of Day (hour)")
+ax.set_ylabel("Number of Rides")
+ax.legend()
+ax.set_title("Number of Rides vs. Time of Day")
+fig.savefig('data/line-graphs/frequency-vs-hour.png')
+
+#c. Breakdown of Trip Route Category vs. Passholder Type
+file = open('data/route-cat-vs-pass-type.txt','w')
+df_grouped = df.groupby(['Trip Route Category','Passholder Type'])
+for name, group in df_grouped:
+	print(name, len(group))#, group.value_counts())
+
+
+plt.show()
